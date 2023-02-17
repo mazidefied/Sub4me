@@ -1,24 +1,37 @@
 import sys
 import urllib.request
 import urllib.parse
-import re,os
+import re
+import os
 
+# Clear the console screen
 os.system('clear')
-
 print ("""
-    
-   CODED BY GEORGE MILLER (USDCHEF)
-   USAGE:
-python3 sub4me.py domain.com                                  
+SUB4ME 
+CODED BY GEORGE MILLER (USDCHEF)                                
 """)
-print ("Scanning Subdomain For", sys.argv[1])
+# Get the domain name from the user
+domain = input("Enter the domain name: ").strip()
 
-for i, arg in enumerate(sys.argv, 1):
-	domains = set()
-	with urllib.request.urlopen('https://crt.sh/?q=' + urllib.parse.quote('%.' + arg)) as r:
-		code = r.read().decode('utf-8')
-		for cert, domain in re.findall('<tr>(?:\s|\S)*?href="\?id=([0-9]+?)"(?:\s|\S)*?<td>([*_a-zA-Z0-9.-]+?\.' + re.escape(arg) + ')</td>(?:\s|\S)*?</tr>', code, re.IGNORECASE):
-			domain = domain.split('@')[-1]
-			if not domain in domains:
-				domains.add(domain)
-				print(domain)
+# Retrieve the subdomains for the inputted domain
+domains = set()
+url = f"https://crt.sh/?q=%25.{domain}"
+response = urllib.request.urlopen(url)
+code = response.read().decode('utf-8')
+pattern = r"<td>([\w\.\-]+?\." + re.escape(domain) + r")</td>"
+matches = re.findall(pattern, code, re.IGNORECASE)
+for match in matches:
+    domain = match.split('@')[-1]
+    if domain not in domains:
+        domains.add(domain)
+        print(domain)
+
+# Print the number of subdomains found
+print(f"{len(domains)} subdomains found for {domain}")
+
+# Save the subdomains to a file with the name of the domain searched
+filename = f"{domain}.txt"
+with open(filename, "w") as f:
+    for domain in domains:
+        f.write(domain + "\n")
+print(f"Subdomains saved to {filename}")
