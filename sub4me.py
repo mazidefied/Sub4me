@@ -10,9 +10,10 @@ import re,os
 os.system('clear')
 
 print ("""
-
+SUB4ME - 
+CODED BY GEORGE MILLER (USDCHEF)
    
-
+USAGE:
 python3 sub4me.py domain.com                                  
 
 """)
