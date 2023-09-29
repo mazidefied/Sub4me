@@ -8,7 +8,7 @@ import os
 os.system('clear')
 print ("""
 SUB4ME 
-CODED BY GEORGE MILLER (USDCHEF)                                
+CODED BY GEORGE                                
 """)
 # Get the domain name from the user
 domain = input("Enter the domain name: ").strip()
